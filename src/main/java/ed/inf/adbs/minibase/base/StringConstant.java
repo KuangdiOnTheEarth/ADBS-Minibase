@@ -15,4 +15,10 @@ public class StringConstant extends Constant {
     public String toString() {
         return "'" + value + "'";
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null || !(obj instanceof StringConstant)) return false;
+        return (this.value).equals(((StringConstant) obj).value);
+    }
 }

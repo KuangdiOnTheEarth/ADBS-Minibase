@@ -15,4 +15,10 @@ public class Variable extends Term {
     public String toString() {
         return name;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null || !(obj instanceof Variable)) return false;
+        return (this.name).equals(((Variable) obj).name);
+    }
 }
