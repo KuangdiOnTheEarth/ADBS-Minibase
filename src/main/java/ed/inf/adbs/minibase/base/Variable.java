@@ -19,6 +19,6 @@ public class Variable extends Term {
     @Override
     public boolean equals(Object obj) {
         if (obj == null || !(obj instanceof Variable)) return false;
-        return (this.name).equals(((Variable) obj).name);
+        return (this.name).equals(((Variable) obj).getName());
     }
 }

@@ -10,6 +10,7 @@ ed\inf\adbs\minibase\parser\QueryParser.class
 ed\inf\adbs\minibase\parser\generated\MinibaseBaseListener.class
 ed\inf\adbs\minibase\parser\generated\MinibaseParser$RelationalAtomContext.class
 ed\inf\adbs\minibase\parser\generated\MinibaseParser$ConstantContext.class
+ed\inf\adbs\minibase\operator\SelectOperator.class
 ed\inf\adbs\minibase\parser\generated\MinibaseParser$ComparisonAtomContext.class
 ed\inf\adbs\minibase\base\RelationalAtom.class
 ed\inf\adbs\minibase\base\Variable.class
@@ -21,6 +22,7 @@ ed\inf\adbs\minibase\parser\QueryParser$TermVisitor.class
 ed\inf\adbs\minibase\parser\generated\MinibaseListener.class
 ed\inf\adbs\minibase\parser\generated\MinibaseLexer.class
 ed\inf\adbs\minibase\base\Constant.class
+ed\inf\adbs\minibase\operator\ScanOperator.class
 ed\inf\adbs\minibase\parser\generated\MinibaseParser$QueryContext.class
 ed\inf\adbs\minibase\base\StringConstant.class
 ed\inf\adbs\minibase\base\ComparisonAtom.class
@@ -38,3 +40,6 @@ ed\inf\adbs\minibase\base\IntegerConstant.class
 ed\inf\adbs\minibase\CQMinimizer.class
 ed\inf\adbs\minibase\parser\generated\MinibaseParser$AvgaggContext.class
 ed\inf\adbs\minibase\parser\generated\MinibaseParser$BodyContext.class
+ed\inf\adbs\minibase\operator\DBCatalog.class
+ed\inf\adbs\minibase\operator\Operator.class
+ed\inf\adbs\minibase\operator\Tuple.class

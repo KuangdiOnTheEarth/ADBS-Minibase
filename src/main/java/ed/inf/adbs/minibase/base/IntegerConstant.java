@@ -19,6 +19,6 @@ public class IntegerConstant extends Constant {
     @Override
     public boolean equals(Object obj) {
         if (obj == null || !(obj instanceof IntegerConstant)) return false;
-        return (this.value).equals(((IntegerConstant) obj).value);
+        return (this.value).equals(((IntegerConstant) obj).getValue());
     }
 }

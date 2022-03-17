@@ -19,6 +19,6 @@ public class StringConstant extends Constant {
     @Override
     public boolean equals(Object obj) {
         if (obj == null || !(obj instanceof StringConstant)) return false;
-        return (this.value).equals(((StringConstant) obj).value);
+        return (this.value).equals(((StringConstant) obj).getValue());
     }
 }
