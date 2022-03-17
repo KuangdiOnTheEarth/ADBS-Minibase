@@ -1,8 +1,6 @@
 package ed.inf.adbs.minibase.operator;
 
-import ed.inf.adbs.minibase.base.IntegerConstant;
-import ed.inf.adbs.minibase.base.StringConstant;
-import ed.inf.adbs.minibase.base.Term;
+import ed.inf.adbs.minibase.base.*;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -16,8 +14,13 @@ public class ScanOperator extends Operator{
     private Scanner relationScanner;
     private final List<String> relationSchema;
 
-    public ScanOperator(String relationName) {
-        this.relationName = relationName;
+    public ScanOperator(RelationalAtom baseQueryAtom) {
+        for (int i = 0; i < baseQueryAtom.getTerms().size(); i++) {
+            if (baseQueryAtom.getTerms().get(i) instanceof Variable)
+                this.variableMask.put(baseQueryAtom.getTerms().get(i).toString(), i);
+        }
+
+        this.relationName = baseQueryAtom.getName();
         DBCatalog dbc = DBCatalog.getInstance();
         this.relationSchema = dbc.getSchema(relationName);
         this.reset();
@@ -63,7 +66,14 @@ public class ScanOperator extends Operator{
     public static void main(String[] args) {
         DBCatalog dbc = DBCatalog.getInstance();
         dbc.init("data/evaluation/db");
-        ScanOperator scanOp = new ScanOperator("R");
+
+        List<Term> queryAtomTerms = new ArrayList<>();
+        queryAtomTerms.add( new IntegerConstant(9));
+        queryAtomTerms.add( new Variable("x"));
+        queryAtomTerms.add( new Variable("y"));
+        RelationalAtom queryAtom = new RelationalAtom("R", queryAtomTerms); // R:(9, x, y)
+        ScanOperator scanOp = new ScanOperator(queryAtom);
+        System.out.println(scanOp.getVariableMask());
 
         scanOp.dump();
 

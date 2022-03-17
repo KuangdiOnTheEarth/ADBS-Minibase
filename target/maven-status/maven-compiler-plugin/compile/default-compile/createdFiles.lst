@@ -29,6 +29,7 @@ ed\inf\adbs\minibase\base\ComparisonAtom.class
 ed\inf\adbs\minibase\base\Atom.class
 ed\inf\adbs\minibase\base\Query.class
 ed\inf\adbs\minibase\parser\QueryParser$ComparisonAtomVisitor.class
+ed\inf\adbs\minibase\operator\SelectOperator$Condition.class
 ed\inf\adbs\minibase\Minibase.class
 ed\inf\adbs\minibase\parser\QueryParser$QueryVisitor.class
 ed\inf\adbs\minibase\parser\QueryParser$1.class

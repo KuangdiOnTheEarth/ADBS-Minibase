@@ -3,6 +3,7 @@ package ed.inf.adbs.minibase.operator;
 import ed.inf.adbs.minibase.base.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class SelectOperator extends Operator {
@@ -21,17 +22,19 @@ public class SelectOperator extends Operator {
         private Term term2 = null;
         private int term2Idx;
 
-        public Condition(RelationalAtom baseQueryAtom, ComparisonAtom compAtom) {
+        public Condition(ComparisonAtom compAtom, HashMap<String, Integer> variableMask) {
             this.op = compAtom.getOp().toString();
             if (compAtom.getTerm1() instanceof Variable) {
-                this.term1Idx = baseQueryAtom.getTerms().indexOf(compAtom.getTerm1());
+//                this.term1Idx = baseQueryAtom.getTerms().indexOf(compAtom.getTerm1());
+                this.term1Idx = variableMask.get(((Variable) compAtom.getTerm1()).getName());
                 System.out.println("Term 1 is Variable, at relation index: " + this.term1Idx);
             } else {
                 this.term1 = compAtom.getTerm1();
                 System.out.println("Term 1 is Constant: " + this.term1);
             }
             if (compAtom.getTerm2() instanceof Variable) {
-                this.term2Idx = baseQueryAtom.getTerms().indexOf(compAtom.getTerm2());
+//                this.term2Idx = baseQueryAtom.getTerms().indexOf(compAtom.getTerm2());
+                this.term2Idx = variableMask.get(((Variable) compAtom.getTerm2()).getName());
                 System.out.println("Term 2 is Variable, at relation index: " + this.term2Idx);
             } else {
                 this.term2 = compAtom.getTerm2();
@@ -70,22 +73,32 @@ public class SelectOperator extends Operator {
         }
     }
 
-    /**
-     *
-     * @param baseQueryAtom the RelationalAtom on which the selection is applied,
-     *                 this atom helps match variables in ComparisonAtom to positions in Tuple
-     * @param compAtomList a List of ComparisonAtom, each represent one predicate condition on the base relation
-     */
-    public SelectOperator(RelationalAtom baseQueryAtom, List<ComparisonAtom> compAtomList) {
-        List<Term> baseTerms = baseQueryAtom.getTerms();
+//    /**
+//     *
+//     * @param baseQueryAtom the RelationalAtom on which the selection is applied,
+//     *                 this atom helps match variables in ComparisonAtom to positions in Tuple
+//     * @param compAtomList a List of ComparisonAtom, each represent one predicate condition on the base relation
+//     */
+//    public SelectOperator(RelationalAtom baseQueryAtom, List<ComparisonAtom> compAtomList) {
+//        List<Term> baseTerms = baseQueryAtom.getTerms();
+//        for (ComparisonAtom comparisonAtom : compAtomList) {
+//            this.conditions.add(new Condition(baseQueryAtom, comparisonAtom, this.variableMask));
+//        }
+//    }
+
+    public SelectOperator(Operator child, List<ComparisonAtom> compAtomList) {
+        this.child = child;
+        this.variableMask = this.child.getVariableMask();
+
         for (ComparisonAtom comparisonAtom : compAtomList) {
-            this.conditions.add(new Condition(baseQueryAtom, comparisonAtom));
+            this.conditions.add(new Condition(comparisonAtom, this.variableMask));
         }
     }
 
-    public void setChild(Operator child) {
-        this.child = child;
-    }
+//    public void setChild(Operator child) {
+//        this.child = child;
+//        this.variableMask = this.child.getVariableMask();
+//    }
 
     @Override
     public void dump() {
@@ -123,7 +136,6 @@ public class SelectOperator extends Operator {
     public static void main(String[] args) {
         DBCatalog dbc = DBCatalog.getInstance();
         dbc.init("data/evaluation/db");
-        ScanOperator scanOp = new ScanOperator("R");
 
         List<Term> queryAtomTerms = new ArrayList<>();
         queryAtomTerms.add( new IntegerConstant(9));
@@ -131,6 +143,8 @@ public class SelectOperator extends Operator {
         queryAtomTerms.add( new Variable("y"));
         RelationalAtom queryAtom = new RelationalAtom("R", queryAtomTerms); // R:(9, x, y)
         System.out.println("Query relational atom: " + queryAtom);
+
+        ScanOperator scanOp = new ScanOperator(queryAtom);
 
         List<ComparisonAtom> compAtomList = new ArrayList<>();
         ComparisonAtom compAtom1 = new ComparisonAtom(
@@ -142,8 +156,7 @@ public class SelectOperator extends Operator {
         System.out.println("Query comparison atom: " + compAtom2);
 
 
-        SelectOperator seleOp = new SelectOperator(queryAtom, compAtomList);
-        seleOp.setChild(scanOp);
+        SelectOperator seleOp = new SelectOperator(scanOp, compAtomList);
         seleOp.dump();
     }
 
