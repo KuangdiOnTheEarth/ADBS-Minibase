@@ -15,9 +15,15 @@ public class ScanOperator extends Operator {
     private final List<String> relationSchema;
 
     public ScanOperator(RelationalAtom baseQueryAtom) {
-        for (int i = 0; i < baseQueryAtom.getTerms().size(); i++) {
-            if (baseQueryAtom.getTerms().get(i) instanceof Variable)
-                this.variableMask.put(baseQueryAtom.getTerms().get(i).toString(), i);
+//        for (int i = 0; i < baseQueryAtom.getTerms().size(); i++) {
+//            if (baseQueryAtom.getTerms().get(i) instanceof Variable)
+//                this.variableMask.put(baseQueryAtom.getTerms().get(i).toString(), i);
+//        }
+        for (Term term : baseQueryAtom.getTerms()) {
+            if (term instanceof Variable)
+                this.variableMask.add(((Variable) term).getName());
+            else
+                this.variableMask.add(null);
         }
 
         this.relationName = baseQueryAtom.getName();

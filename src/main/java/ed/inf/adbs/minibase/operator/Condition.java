@@ -2,7 +2,7 @@ package ed.inf.adbs.minibase.operator;
 
 import ed.inf.adbs.minibase.base.*;
 
-import java.util.HashMap;
+import java.util.List;
 
 public class Condition {
     private String op;
@@ -11,11 +11,12 @@ public class Condition {
     private Term term2 = null;
     private int term2Idx;
 
-    public Condition(ComparisonAtom compAtom, HashMap<String, Integer> variableMask) {
+    public Condition(ComparisonAtom compAtom, List<String> variableMask) {
         this.op = compAtom.getOp().toString();
         if (compAtom.getTerm1() instanceof Variable) {
 //                this.term1Idx = baseQueryAtom.getTerms().indexOf(compAtom.getTerm1());
-            this.term1Idx = variableMask.get(((Variable) compAtom.getTerm1()).getName());
+//            this.term1Idx = variableMask.get(((Variable) compAtom.getTerm1()).getName());
+            this.term1Idx = variableMask.indexOf(((Variable) compAtom.getTerm1()).getName());
             System.out.println("Term 1 is Variable, at relation index: " + this.term1Idx);
         } else {
             this.term1 = compAtom.getTerm1();
@@ -23,7 +24,8 @@ public class Condition {
         }
         if (compAtom.getTerm2() instanceof Variable) {
 //                this.term2Idx = baseQueryAtom.getTerms().indexOf(compAtom.getTerm2());
-            this.term2Idx = variableMask.get(((Variable) compAtom.getTerm2()).getName());
+//            this.term2Idx = variableMask.get(((Variable) compAtom.getTerm2()).getName());
+            this.term2Idx = variableMask.indexOf(((Variable) compAtom.getTerm2()).getName());
             System.out.println("Term 2 is Variable, at relation index: " + this.term2Idx);
         } else {
             this.term2 = compAtom.getTerm2();

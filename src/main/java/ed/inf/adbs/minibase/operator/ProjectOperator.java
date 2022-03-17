@@ -3,7 +3,6 @@ package ed.inf.adbs.minibase.operator;
 import ed.inf.adbs.minibase.base.*;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class ProjectOperator extends Operator {
@@ -17,13 +16,14 @@ public class ProjectOperator extends Operator {
 
     public ProjectOperator(Operator childOperator, RelationalAtom queryHead) {
         this.child = childOperator;
-        HashMap<String, Integer> childVariableMask = childOperator.getVariableMask(); // the variableMask before projection
+        List<String> childVariableMask = childOperator.getVariableMask(); // the variableMask before projection
         this.projectionName = queryHead.getName();
         for (int i = 0; i < queryHead.getTerms().size(); i++) {
             String varName = ((Variable) queryHead.getTerms().get(i)).getName();
-            int idx = childVariableMask.get(varName);
+            int idx = childVariableMask.indexOf(varName);
             this.projectIndices.add(idx);
-            this.variableMask.put(varName, i); // this.variableMask will record the variable positions after projection
+//            this.variableMask.put(varName, i);
+            this.variableMask.add(varName); // this.variableMask will record the variable positions after projection
         }
         System.out.println(childVariableMask + "- -> " + this.variableMask + "(" + this.projectIndices + ")");
     }

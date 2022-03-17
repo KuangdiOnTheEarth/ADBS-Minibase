@@ -1,10 +1,11 @@
 package ed.inf.adbs.minibase.operator;
 
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class Operator {
 
-    protected HashMap<String, Integer> variableMask = new HashMap<>();
+    protected List<String> variableMask = new ArrayList<>();
 
     public abstract void dump();
 
@@ -12,7 +13,7 @@ public abstract class Operator {
 
     public abstract Tuple getNextTuple();
 
-    public HashMap<String, Integer> getVariableMask() {
+    public List<String> getVariableMask() {
         return this.variableMask;
     }
 

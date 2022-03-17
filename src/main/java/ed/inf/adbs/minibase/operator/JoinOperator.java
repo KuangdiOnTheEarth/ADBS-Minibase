@@ -17,30 +17,30 @@ public class JoinOperator extends Operator {
 
     public JoinOperator(Operator leftChild, Operator rightChild) {
         this.leftChild = leftChild;
-        HashMap<String, Integer> leftVariableMask = leftChild.getVariableMask();
+        List<String> leftVariableMask = leftChild.getVariableMask();
         this.rightChild = rightChild;
-        HashMap<String, Integer> rightVariableMask = rightChild.getVariableMask();
+        List<String> rightVariableMask = rightChild.getVariableMask();
 
-        for (String varName : leftVariableMask.keySet()) {
-            this.variableMask.put(varName, leftVariableMask.get(varName));
-            if (rightVariableMask.keySet().contains(varName)) {
-                this.joinConditionIndices.put(leftVariableMask.get(varName), rightVariableMask.get(varName));
-                this.rightChildJoinColumns.add(rightVariableMask.get(varName));
+        for (String leftVar : leftVariableMask) {
+            this.variableMask.add(leftVar);
+            if (rightVariableMask.contains(leftVar)) {
+                this.joinConditionIndices.put(leftVariableMask.indexOf(leftVar), rightVariableMask.indexOf(leftVar));
+                this.rightChildJoinColumns.add(rightVariableMask.indexOf(leftVar));
             }
         }
-        int leftTupleSize = leftChild.getNextTuple().getTerms().size();
-        leftChild.reset();
-        for (String rightVar : rightVariableMask.keySet()) {
-            if (!this.variableMask.keySet().contains(rightVar)) {
-                int rightIndex = 
-                this.variableMask.put(rightVar, (leftTupleSize-1)+rightIndex );
+        for (String rightVar : rightVariableMask) {
+            if (rightVar == null) {
+                this.variableMask.add(null);
+            } else {
+                if (!this.variableMask.contains(rightVar))
+                    this.variableMask.add(rightVar);
             }
         }
     }
 
     @Override
     public void dump() {
-
+        
     }
 
     @Override
