@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class ProjectOperator extends Operator{
+public class ProjectOperator extends Operator {
 
     private Operator child;
     private String projectionName;
