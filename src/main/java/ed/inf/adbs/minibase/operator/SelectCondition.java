@@ -4,14 +4,14 @@ import ed.inf.adbs.minibase.base.*;
 
 import java.util.List;
 
-public class Condition {
+public class SelectCondition {
     private String op;
     private Term term1 = null;
     private int term1Idx;
     private Term term2 = null;
     private int term2Idx;
 
-    public Condition(ComparisonAtom compAtom, List<String> variableMask) {
+    public SelectCondition(ComparisonAtom compAtom, List<String> variableMask) {
         this.op = compAtom.getOp().toString();
         if (compAtom.getTerm1() instanceof Variable) {
 //                this.term1Idx = baseQueryAtom.getTerms().indexOf(compAtom.getTerm1());

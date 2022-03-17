@@ -1,5 +1,6 @@
 package ed.inf.adbs.minibase.operator;
 
+import ed.inf.adbs.minibase.base.ComparisonAtom;
 import ed.inf.adbs.minibase.base.Term;
 
 import java.util.ArrayList;
@@ -11,21 +12,26 @@ public class JoinOperator extends Operator {
     private Operator leftChild;
     private Operator rightChild;
 
+    private List<JoinCondition> conditions = new ArrayList<>();
+
     private HashMap<Integer, Integer> joinConditionIndices = new HashMap<>();
-    private List<Integer> rightChildJoinColumns = new ArrayList<>();
+    private List<Integer> rightDuplicateColumns = new ArrayList<>();
     // the columns in right child to be removed (since it duplicates with columns in left child)
 
-    public JoinOperator(Operator leftChild, Operator rightChild) {
+    public JoinOperator(Operator leftChild, Operator rightChild, List<ComparisonAtom> comparisonAtoms) {
         this.leftChild = leftChild;
         List<String> leftVariableMask = leftChild.getVariableMask();
         this.rightChild = rightChild;
         List<String> rightVariableMask = rightChild.getVariableMask();
 
+        for (ComparisonAtom compAtom : comparisonAtoms)
+            this.conditions.add(new JoinCondition(compAtom, leftVariableMask, rightVariableMask));
+
         for (String leftVar : leftVariableMask) {
             this.variableMask.add(leftVar);
             if (rightVariableMask.contains(leftVar)) {
                 this.joinConditionIndices.put(leftVariableMask.indexOf(leftVar), rightVariableMask.indexOf(leftVar));
-                this.rightChildJoinColumns.add(rightVariableMask.indexOf(leftVar));
+                this.rightDuplicateColumns.add(rightVariableMask.indexOf(leftVar));
             }
         }
         for (String rightVar : rightVariableMask) {
@@ -40,7 +46,11 @@ public class JoinOperator extends Operator {
 
     @Override
     public void dump() {
-        
+        Tuple nextTuple = this.getNextTuple();
+        while (nextTuple != null) {
+            System.out.println(nextTuple);
+            nextTuple = this.getNextTuple();
+        }
     }
 
     @Override
@@ -57,13 +67,22 @@ public class JoinOperator extends Operator {
             Tuple rightTuple = this.rightChild.getNextTuple();
             while (rightTuple != null) {
 
-                // check the join conditions
                 boolean pass = true;
+                // check the inner join conditions provided by same variable names in two query atoms
                 for (Integer leftIndex : this.joinConditionIndices.keySet()) {
                     int rightIndex = this.joinConditionIndices.get(leftIndex);
                     if (!leftTuple.getTerms().get(leftIndex).equals(rightTuple.getTerms().get(rightIndex))) {
                         pass = false;
                         break;
+                    }
+                }
+                // check the join conditions provided by extra ComparisonAtom, and involves different variables
+                if (pass) {
+                    for (JoinCondition condition : this.conditions) {
+                        if (!condition.check(leftTuple, rightTuple)) {
+                            pass = false;
+                            break;
+                        }
                     }
                 }
 
@@ -74,7 +93,7 @@ public class JoinOperator extends Operator {
                     for (Term leftTerm : leftTuple.getTerms())
                         joinTermList.add(leftTerm);
                     for (int i = 0; i < rightTuple.getTerms().size(); i++) {
-                        if (!this.rightChildJoinColumns.contains(i)) {
+                        if (!this.rightDuplicateColumns.contains(i)) {
                             joinTermList.add(rightTuple.getTerms().get(i));
                         }
                     }
@@ -89,5 +108,9 @@ public class JoinOperator extends Operator {
             leftTuple = this.leftChild.getNextTuple();
         }
         return null;
+    }
+
+    public static void main(String[] args) {
+
     }
 }

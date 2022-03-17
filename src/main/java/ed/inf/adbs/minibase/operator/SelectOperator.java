@@ -8,7 +8,7 @@ import java.util.List;
 public class SelectOperator extends Operator {
 
     private Operator child;
-    private List<Condition> conditions = new ArrayList<>();
+    private List<SelectCondition> conditions = new ArrayList<>();
 
 //    /**
 //     *
@@ -28,7 +28,7 @@ public class SelectOperator extends Operator {
         this.variableMask = this.child.getVariableMask();
 
         for (ComparisonAtom comparisonAtom : compAtomList) {
-            this.conditions.add(new Condition(comparisonAtom, this.variableMask));
+            this.conditions.add(new SelectCondition(comparisonAtom, this.variableMask));
         }
     }
 
@@ -56,7 +56,7 @@ public class SelectOperator extends Operator {
         Tuple nextTuple = this.child.getNextTuple();
         while (nextTuple != null) {
             boolean pass = true;
-            for (Condition condition : this.conditions) {
+            for (SelectCondition condition : this.conditions) {
                 if (!condition.check(nextTuple)) {
                     pass = false;
                     break;
