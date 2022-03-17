@@ -22,8 +22,13 @@ public class Tuple {
         return terms;
     }
 
+//    @Override
+//    public String toString() {
+//        return relationName+ ": [" + Utils.join(terms, ", ") + "]";
+//    }
+
     @Override
     public String toString() {
-        return relationName+ ": [" + Utils.join(terms, ", ") + "]";
+        return Utils.join(terms, ", ");
     }
 }
