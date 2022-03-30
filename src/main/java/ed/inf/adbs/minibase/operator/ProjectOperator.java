@@ -29,15 +29,6 @@ public class ProjectOperator extends Operator {
     }
 
     @Override
-    public void dump() {
-        Tuple nextTuple = this.getNextTuple();
-        while (nextTuple != null) {
-            System.out.println(nextTuple);
-            nextTuple = this.getNextTuple();
-        }
-    }
-
-    @Override
     public void reset() {
         this.child.reset();
         this.reportBuffer = new ArrayList<>();
@@ -84,7 +75,7 @@ public class ProjectOperator extends Operator {
         System.out.println("Query comparison atom: " + compAtom2);
 
         SelectOperator seleOp = new SelectOperator(scanOp, compAtomList);
-        seleOp.dump();
+        seleOp.dump(null);
         seleOp.reset();
         System.out.println("------------------------------");
 
@@ -95,7 +86,7 @@ public class ProjectOperator extends Operator {
         System.out.println(queryHeadAtom);
 
         ProjectOperator projOp = new ProjectOperator(seleOp, queryHeadAtom);
-        projOp.dump();
+        projOp.dump(null);
 
     }
 }

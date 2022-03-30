@@ -46,15 +46,6 @@ public class JoinOperator extends Operator {
     }
 
     @Override
-    public void dump() {
-        Tuple nextTuple = this.getNextTuple();
-        while (nextTuple != null) {
-            System.out.println(nextTuple);
-            nextTuple = this.getNextTuple();
-        }
-    }
-
-    @Override
     public void reset() {
         this.leftChild.reset();
         this.rightChild.reset();
@@ -162,11 +153,11 @@ public class JoinOperator extends Operator {
         ScanOperator scanOpS = new ScanOperator(queryBodyAtomS);
 
         JoinOperator joinOp = new JoinOperator(scanOpR, scanOpS, compAtomList);
-        joinOp.dump();
+        joinOp.dump(null);
         joinOp.reset();
         System.out.println("-----------------------------------");
 
         ProjectOperator projOp = new ProjectOperator(joinOp, queryHeadAtom);
-        projOp.dump();
+        projOp.dump(null);
     }
 }

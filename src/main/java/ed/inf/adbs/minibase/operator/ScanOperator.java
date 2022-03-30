@@ -33,7 +33,7 @@ public class ScanOperator extends Operator {
     }
 
     @Override
-    public void dump() {
+    public void dump(String outputFile) {
         while (this.relationScanner.hasNextLine()) {
             System.out.println(this.getNextTuple());
         }
@@ -81,7 +81,7 @@ public class ScanOperator extends Operator {
         ScanOperator scanOp = new ScanOperator(queryAtom);
         System.out.println(scanOp.getVariableMask());
 
-        scanOp.dump();
+        scanOp.dump(null);
 
         System.out.println("---------");
         System.out.println(scanOp.getNextTuple());
@@ -92,7 +92,7 @@ public class ScanOperator extends Operator {
         System.out.println(scanOp.getNextTuple());
 
         System.out.println("---------");
-        scanOp.dump();
+        scanOp.dump(null);
 
     }
 

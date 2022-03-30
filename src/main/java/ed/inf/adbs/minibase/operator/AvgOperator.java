@@ -42,15 +42,6 @@ public class AvgOperator extends Operator {
     }
 
     @Override
-    public void dump() {
-        Tuple nextTuple = this.getNextTuple();
-        while (nextTuple != null) {
-            System.out.println(nextTuple);
-            nextTuple = this.getNextTuple();
-        }
-    }
-
-    @Override
     public void reset() {
         this.child.reset();
         this.tuple2BufferIndex = new HashMap<>();

@@ -39,11 +39,13 @@ public class Minibase {
             Query query = QueryParser.parse(Paths.get(inputFile));
             System.out.println("Input query: " + query);
 
+
             Operator queryPlan = buildQueryPlan(query);
-            if (queryPlan != null)
-                queryPlan.dump();
-            else
+            if (queryPlan != null) {
+                queryPlan.dump(outputFile);
+            } else {
                 System.out.println("-- Empty query --");
+            }
 
         } catch (Exception e) {
             System.err.println("Exception occurred during parsing");
@@ -136,32 +138,21 @@ public class Minibase {
             previousVariables = mergedVariables;
         }
 
-        root.dump();
+        root.dump(null);
         root.reset();
-        System.out.println("--------Project--------");
+        System.out.println("--------Project & Aggregation--------");
 
         // Project operation & Aggregation operations
         List<Term> headTerms = new ArrayList<>(query.getHead().getTerms());
         Term lastHeadTerm = headTerms.get(headTerms.size() - 1);
-        if (lastHeadTerm instanceof AggTerm) {
-            // contain aggregation operation
-//            String aggVar = ((AggTerm) lastHeadTerm).getVariable();
-//            headTerms.set(headTerms.size() - 1, new Variable(aggVar));
-//            root = new ProjectOperator(root, new RelationalAtom(query.getHead().getName(), headTerms));
-//            root.dump();
-//            root.reset();
-            System.out.println("------AGG-------");
-            if (lastHeadTerm instanceof Sum) {
-//                root = new SumOperator(root, (Sum)lastHeadTerm);
-                root = new SumOperator(root, query.getHead());
-            } else {
-//                root = new SingleAvgOperator(root, (Avg)lastHeadTerm);
-                root = new AvgOperator(root, query.getHead());
-            }
+        if (lastHeadTerm instanceof Sum) {
+            root = new SumOperator(root, query.getHead());
+        } else if (lastHeadTerm instanceof Avg) {
+            root = new AvgOperator(root, query.getHead());
         } else {
-            // not contain aggregation operation, project directly
             root = new ProjectOperator(root, query.getHead());
         }
+
         return root;
     }
 
