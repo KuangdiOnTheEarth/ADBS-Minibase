@@ -33,7 +33,7 @@ public class AggBuffer {
 
     public Tuple getAvgTuple() {
         List<Term> termList = new ArrayList<>(this.termList);
-        termList.add(this.aggIndex, new IntegerConstant(this.aggSum/this.aggCount));
+        termList.add(new IntegerConstant(this.aggSum/this.aggCount));
         return new Tuple("AVG("+this.aggVarName+")", termList);
     }
 }

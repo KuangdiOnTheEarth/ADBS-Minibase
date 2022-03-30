@@ -135,8 +135,32 @@ public class Minibase {
             // update variable list after two subtrees are joined
             previousVariables = mergedVariables;
         }
-        // Project operation
-        root = new ProjectOperator(root, query.getHead());
+
+        root.dump();
+        root.reset();
+        System.out.println("--------Project--------");
+
+        // Project operation & Aggregation operations
+        List<Term> headTerms = new ArrayList<>(query.getHead().getTerms());
+        Term lastHeadTerm = headTerms.get(headTerms.size() - 1);
+        if (lastHeadTerm instanceof AggTerm) {
+            // contain aggregation operation
+//            String aggVar = ((AggTerm) lastHeadTerm).getVariable();
+//            headTerms.set(headTerms.size() - 1, new Variable(aggVar));
+//            root = new ProjectOperator(root, new RelationalAtom(query.getHead().getName(), headTerms));
+//            root.dump();
+//            root.reset();
+            System.out.println("------AGG-------");
+            if (lastHeadTerm instanceof Sum) {
+                root = new SumOperator(root, (Sum)lastHeadTerm);
+            } else {
+//                root = new SingleAvgOperator(root, (Avg)lastHeadTerm);
+                root = new AvgOperator(root, query.getHead());
+            }
+        } else {
+            // not contain aggregation operation, project directly
+            root = new ProjectOperator(root, query.getHead());
+        }
         return root;
     }
 

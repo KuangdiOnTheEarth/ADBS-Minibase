@@ -10,7 +10,7 @@ public class ProjectOperator extends Operator {
     private Operator child;
     private String projectionName;
 
-    private List<Integer> projectIndices = new ArrayList<>();
+    private List<Integer> projectIndices = new ArrayList<>(); // where to find the projection column in child tuple
     private List<String> reportBuffer = new ArrayList<>();
 
 
@@ -40,6 +40,7 @@ public class ProjectOperator extends Operator {
     @Override
     public void reset() {
         this.child.reset();
+        this.reportBuffer = new ArrayList<>();
     }
 
     @Override
