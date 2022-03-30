@@ -23,7 +23,7 @@ public abstract class Operator {
                     writer.println(nextTuple.toString());
                 nextTuple = this.getNextTuple();
             }
-            
+
             if (writer!=null)
                 writer.close();
 
