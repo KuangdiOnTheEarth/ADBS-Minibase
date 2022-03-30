@@ -59,14 +59,16 @@ public class QueryParser {
             if (ctx.head().sumagg() != null) {
                 // Do something with this aggregate
 
-                //System.err.println("SUM variable name: " + ctx.head().sumagg().variable().getText());
+                System.err.println("SUM variable name: " + ctx.head().sumagg().variable().getText());
+                System.err.println("SUM variable index: " + ctx.head().sumagg().variable().getAltNumber());
             }
 
             // Check if AVG exists
             if (ctx.head().avgagg() != null) {
                 // Do something with this aggregate
 
-                //System.err.println("AVG variable name: " + ctx.head().avgagg().variable().getText());
+                System.err.println("AVG variable name: " + ctx.head().avgagg().variable().getText());
+                System.err.println("AVG variable index: " + ctx.head().avgagg().variable().getRuleIndex());
             }
 
             return new Query(head, body);

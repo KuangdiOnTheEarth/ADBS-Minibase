@@ -1,6 +1,7 @@
 D:\MyProjects\ADBS\Minibase\src\main\java\ed\inf\adbs\minibase\Minibase.java
 D:\MyProjects\ADBS\Minibase\src\main\java\ed\inf\adbs\minibase\operator\Operator.java
 D:\MyProjects\ADBS\Minibase\src\main\java\ed\inf\adbs\minibase\operator\ScanOperator.java
+D:\MyProjects\ADBS\Minibase\src\main\java\ed\inf\adbs\minibase\operator\AggBuffer.java
 D:\MyProjects\ADBS\Minibase\src\main\java\ed\inf\adbs\minibase\parser\generated\MinibaseListener.java
 D:\MyProjects\ADBS\Minibase\src\main\java\ed\inf\adbs\minibase\operator\JoinOperator.java
 D:\MyProjects\ADBS\Minibase\src\main\java\ed\inf\adbs\minibase\base\ComparisonOperator.java
@@ -18,10 +19,14 @@ D:\MyProjects\ADBS\Minibase\src\main\java\ed\inf\adbs\minibase\parser\generated\
 D:\MyProjects\ADBS\Minibase\src\main\java\ed\inf\adbs\minibase\parser\generated\MinibaseVisitor.java
 D:\MyProjects\ADBS\Minibase\src\main\java\ed\inf\adbs\minibase\Utils.java
 D:\MyProjects\ADBS\Minibase\src\main\java\ed\inf\adbs\minibase\operator\JoinCondition.java
+D:\MyProjects\ADBS\Minibase\src\main\java\ed\inf\adbs\minibase\base\SumTerm.java
 D:\MyProjects\ADBS\Minibase\src\main\java\ed\inf\adbs\minibase\base\StringConstant.java
 D:\MyProjects\ADBS\Minibase\src\main\java\ed\inf\adbs\minibase\parser\generated\MinibaseBaseVisitor.java
 D:\MyProjects\ADBS\Minibase\src\main\java\ed\inf\adbs\minibase\operator\Tuple.java
+D:\MyProjects\ADBS\Minibase\src\main\java\ed\inf\adbs\minibase\base\AvgTerm.java
 D:\MyProjects\ADBS\Minibase\src\main\java\ed\inf\adbs\minibase\base\Atom.java
+D:\MyProjects\ADBS\Minibase\src\main\java\ed\inf\adbs\minibase\operator\SumOperator.java
+D:\MyProjects\ADBS\Minibase\src\main\java\ed\inf\adbs\minibase\operator\AvgOperator.java
 D:\MyProjects\ADBS\Minibase\src\main\java\ed\inf\adbs\minibase\parser\generated\MinibaseBaseListener.java
 D:\MyProjects\ADBS\Minibase\src\main\java\ed\inf\adbs\minibase\operator\DBCatalog.java
 D:\MyProjects\ADBS\Minibase\src\main\java\ed\inf\adbs\minibase\operator\ProjectOperator.java
