@@ -152,7 +152,8 @@ public class Minibase {
 //            root.reset();
             System.out.println("------AGG-------");
             if (lastHeadTerm instanceof Sum) {
-                root = new SumOperator(root, (Sum)lastHeadTerm);
+//                root = new SumOperator(root, (Sum)lastHeadTerm);
+                root = new SumOperator(root, query.getHead());
             } else {
 //                root = new SingleAvgOperator(root, (Avg)lastHeadTerm);
                 root = new AvgOperator(root, query.getHead());
