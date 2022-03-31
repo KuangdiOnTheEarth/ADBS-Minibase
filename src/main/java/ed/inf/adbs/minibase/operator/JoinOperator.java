@@ -8,9 +8,12 @@ import java.util.List;
 
 /**
  * Apply JOIN operation on the output tuple sets of two child operators.
- * The inner join conditions (i.e. the two join relations contain same variables) will be processed automatically in this class.
- * The rest of join conditions (e.g. some comparison between two different variables in the two join relations separately)
- *      are explicitly provided by {@link ComparisonAtom} in query body, which is an input parameter in the constructor.
+ * The implicit inner join conditions (i.e. the two join relations contain same variables)
+ *      will be processed automatically in this class.
+ * Other explicit join conditions (e.g. some comparison between two different variables in the two join relations separately)
+ *      are provided by {@link ComparisonAtom} in query body, which is an input parameter in the constructor.
+ * All these join conditions (either implicit or explicit) will be converted into {@link JoinCondition} instances,
+ *      which use {@link JoinCondition#check(Tuple, Tuple)} to check whether a combination of left and right tuple satisfies the requirement.
  */
 public class JoinOperator extends Operator {
 
@@ -31,7 +34,7 @@ public class JoinOperator extends Operator {
 
     /**
      * Initialise the operator:
-     *      (1) Convert the input {@link ComparisonAtom} list into {@link SelectCondition} list,
+     *      (1) Convert the input {@link ComparisonAtom} list into {@link JoinCondition} list,
      *          which implements specific methods for checking whether a tuple satisfy a certain condition.
      *      (2) Check the inner join conditions, i.e. find the variables which appear in both left and right tuples,
      *          interpret these conditions as {@link SelectOperator} instances.

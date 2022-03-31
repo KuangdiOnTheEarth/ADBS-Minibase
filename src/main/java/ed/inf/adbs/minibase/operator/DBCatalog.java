@@ -4,6 +4,12 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
 
+/**
+ * A catalog for storing global information like relation schema and database directory.
+ * Be used in {@link ScanOperator} to support the data file access and data type identification.
+ *
+ * Singleton design pattern is applied, only on instance of catalog will be created during each run.
+ */
 public class DBCatalog {
 
     public static DBCatalog instance;
@@ -15,6 +21,12 @@ public class DBCatalog {
 
     private DBCatalog() {}
 
+    /**
+     * A getter for catalog instance (accords to Singleton design pattern).
+     * Create and return an instance if this class has not been instantiated.
+     * Otherwise, return the reference to existing instance.
+     * @return the reference to instance of catalog
+     */
     public static DBCatalog getInstance(){
         if (instance == null)
             instance = new DBCatalog();
@@ -22,7 +34,7 @@ public class DBCatalog {
     }
 
     /**
-     *
+     * Initialise the catalog, scan and read the schema information under the database directory.
      * @param dbDirectory the relative path to the 'db' directory
      */
     public void init(String dbDirectory) {
