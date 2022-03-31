@@ -58,7 +58,7 @@ public class QueryParser {
             // Check if SUM exists
             if (ctx.head().sumagg() != null) {
                 // Do something with this aggregate
-                System.err.println("SUM variable name: " + ctx.head().sumagg().variable().getText());
+//                System.err.println("SUM variable name: " + ctx.head().sumagg().variable().getText());
                 head.getTerms().add(new Sum(ctx.head().sumagg().variable().getText()));
             }
 
@@ -66,7 +66,7 @@ public class QueryParser {
             if (ctx.head().avgagg() != null) {
                 // Do something with this aggregate
 
-                System.err.println("AVG variable name: " + ctx.head().avgagg().variable().getText());
+//                System.err.println("AVG variable name: " + ctx.head().avgagg().variable().getText());
                 head.getTerms().add(new Avg(ctx.head().avgagg().variable().getText()));
             }
 

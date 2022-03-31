@@ -28,17 +28,17 @@ public class SelectCondition {
         // check the class of each operand, store in different formats
         if (compAtom.getTerm1() instanceof Variable) {
             this.term1Idx = variableMask.indexOf(((Variable) compAtom.getTerm1()).getName());
-            System.out.println("Term 1 is Variable, at relation index: " + this.term1Idx);
+//            System.out.println("Term 1 is Variable, at relation index: " + this.term1Idx);
         } else {
             this.term1 = compAtom.getTerm1();
-            System.out.println("Term 1 is Constant: " + this.term1);
+//            System.out.println("Term 1 is Constant: " + this.term1);
         }
         if (compAtom.getTerm2() instanceof Variable) {
             this.term2Idx = variableMask.indexOf(((Variable) compAtom.getTerm2()).getName());
-            System.out.println("Term 2 is Variable, at relation index: " + this.term2Idx);
+//            System.out.println("Term 2 is Variable, at relation index: " + this.term2Idx);
         } else {
             this.term2 = compAtom.getTerm2();
-            System.out.println("Term 2 is Constant: " + this.term2);
+//            System.out.println("Term 2 is Constant: " + this.term2);
         }
     }
 

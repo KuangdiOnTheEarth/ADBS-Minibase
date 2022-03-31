@@ -60,7 +60,7 @@ abstract public class AggregateOperator extends Operator {
         this.projectIndices.add(idx);
         this.variableMask.add(avgTerm.toString()); // this.variableMask will record the variable positions after projection
 
-        System.out.println(childVariableMask + "- -> " + this.variableMask + "(" + this.projectIndices + ")");
+//        System.out.println(childVariableMask + "- -> " + this.variableMask + "(" + this.projectIndices + ")");
     }
 
     /**
@@ -96,7 +96,6 @@ abstract public class AggregateOperator extends Operator {
      *          Otherwise, a new buffer record will be created for the new tuple.
      */
     protected void aggregate() {
-        System.out.println("------------ aggregate --------------");
         Tuple childOutput = this.child.getNextTuple();
         while (childOutput != null) {
             // extract the term list and remove the aggregation term

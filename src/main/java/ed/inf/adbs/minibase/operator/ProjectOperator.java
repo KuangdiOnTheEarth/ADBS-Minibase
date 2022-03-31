@@ -40,7 +40,7 @@ public class ProjectOperator extends Operator {
             this.projectIndices.add(idx);
             this.variableMask.add(varName); // this.variableMask will record the variable positions after projection
         }
-        System.out.println(childVariableMask + "- -> " + this.variableMask + "(" + this.projectIndices + ")");
+//        System.out.println(childVariableMask + "- -> " + this.variableMask + "(" + this.projectIndices + ")");
     }
 
     /**
