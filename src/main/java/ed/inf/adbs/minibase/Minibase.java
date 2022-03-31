@@ -52,7 +52,7 @@ public class Minibase {
     }
 
     /**
-     * Build a query plan (as a tree of {@link Operator} instances) for the input query.
+     * Build a query plan (as a left-deep join tree of {@link Operator} instances) for the input query.
      * The {@code RelationalAtom} in the query body will be processed from left to right,
      * building a tree in a Post-Order Traversal.
      * For each {@code RelationalAtom}:

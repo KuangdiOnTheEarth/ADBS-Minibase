@@ -1,5 +1,8 @@
 package ed.inf.adbs.minibase.base;
 
+/**
+ * Represents a "SUM(x)" term.
+ */
 public class Sum extends AggTerm {
 
     public Sum(String name) {

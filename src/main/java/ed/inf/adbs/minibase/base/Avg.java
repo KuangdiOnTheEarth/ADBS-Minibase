@@ -1,5 +1,8 @@
 package ed.inf.adbs.minibase.base;
 
+/**
+ * Represents a "AVG(x)" term.
+ */
 public class Avg extends AggTerm {
 
     public Avg(String name) {
