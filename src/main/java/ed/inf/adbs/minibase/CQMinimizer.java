@@ -37,6 +37,7 @@ public class CQMinimizer {
      *
      * Assume the body of the query from inputFile has no comparison atoms
      * but could potentially have constants in its relational atoms.
+     * Logic of minimization is described as in-line comments
      *
      */
     public static void minimizeCQ(String inputFile, String outputFile) {
@@ -45,7 +46,7 @@ public class CQMinimizer {
             Query query = QueryParser.parse(Paths.get(inputFile));
             List<Term> head = query.getHead().getTerms();
             List<Atom> body =query.getBody();
-            System.out.println("Head: " + head + "\nBody: " + body); // preview the input query
+//            System.out.println("Head: " + head + "\nBody: " + body); // preview the input query
 
             // convert the type of output variables to Variable
             List<Variable> output_variables = new ArrayList<Variable>();
@@ -60,7 +61,7 @@ public class CQMinimizer {
             for (int i = body_atoms.size(); i > 0; i--) {
                 int cur_atom_idx = body_atoms.size() - i;
                 RelationalAtom candidate_atom = body_atoms.get(cur_atom_idx);
-                System.out.println("-- Checking " + candidate_atom);
+//                System.out.println("-- Checking " + candidate_atom);
 
                 // check whether this Atom contains output variable that is unique in body
                 if (contain_unique_output_variable(cur_atom_idx, body_atoms, output_variables)) {
@@ -69,13 +70,13 @@ public class CQMinimizer {
                 // finding query homomorphism from original query to reduced query is equivalent to
                 // checking whether the current atom holds a homomorphism to any of other atoms
                 if (has_homomorphism(cur_atom_idx, body_atoms)) {
-                    System.out.println("---- Atom Removed ! ! ! ! ! ! ! ! ! ! ! ! !");
+//                    System.out.println("---- Atom Removed ! ! ! ! ! ! ! ! ! ! ! ! !");
                     body_atoms.remove(cur_atom_idx);
                 }
             }
 
             // print minimal CQ to output file
-            System.out.println("Minimal: " + body_atoms);
+//            System.out.println("Minimal: " + body_atoms);
 
             List<Atom> reduced_body = new ArrayList<>(body_atoms);
             Query minimal_query = new Query(query.getHead(), reduced_body);
@@ -90,7 +91,7 @@ public class CQMinimizer {
     }
 
     /**
-     * Check whether an atom contains some output variables that never appeared in any other atoms
+     * Check whether an atom contains some output variables that never appeared in any other atoms.
      * @param cur_atom_idx the index of the being checked atom in the atom list
      * @param body_atoms the list of atoms
      * @param output_variables the list of output variables
@@ -109,14 +110,14 @@ public class CQMinimizer {
                     }
                 }
                 if (is_duplicate) {
-                    System.out.println("---- " + term + " is not unique output variable"); // this term is output variable, but not unique
+//                    System.out.println("---- " + term + " is not unique output variable"); // this term is output variable, but not unique
                 } else {
                     // this atom contains a term, which appears in the output, but no duplication in other atoms
-                    System.out.println("---- " + term + " is unique!!! --> this atom can not be removed!!!");
+//                    System.out.println("---- " + term + " is unique!!! --> this atom can not be removed!!!");
                     return true;
                 }
             } else {
-                System.out.println("---- " + term + " is not unique output variable"); // this term is not output variable
+//                System.out.println("---- " + term + " is not unique output variable"); // this term is not output variable
             }
 
         }
@@ -132,7 +133,7 @@ public class CQMinimizer {
     private static boolean has_homomorphism(int cur_atom_idx, List<RelationalAtom> body_atoms) {
         RelationalAtom cur_atom = body_atoms.get(cur_atom_idx);
         for (RelationalAtom target_atom : body_atoms) {
-            System.out.println("---- Comparing with " + target_atom);
+//            System.out.println("---- Comparing with " + target_atom);
             if (body_atoms.indexOf(target_atom) == cur_atom_idx) continue; // ignore the being checked atom itself
             if (!Objects.equals(target_atom.getName(), cur_atom.getName())) continue; // ignore the atom with different relation name
             // homomorphism from cur_atom to target_atom exists if:
@@ -143,7 +144,7 @@ public class CQMinimizer {
                 Term cur_term = cur_atom.getTerms().get(i);
                 if (cur_term instanceof Constant) {
                     if (!cur_term.equals(target_atom.getTerms().get(i))) {
-                        System.out.println("------ the " + i + "th element is constant, not match");
+//                        System.out.println("------ the " + i + "th element is constant, not match");
                         found_homo = false;
                         break;
                     }
@@ -160,7 +161,7 @@ public class CQMinimizer {
                                     // in the target term, the being checked term should only appear at the corresponding place
                                     if (cur_term != target_atom.getTerms().get(i)) {
                                         found_homo = false;
-                                        System.out.println("------ the " + i +"th element has invalid variable-to-variable mapping with " + temp_atom);
+//                                        System.out.println("------ the " + i +"th element has invalid variable-to-variable mapping with " + temp_atom);
                                         break;
                                     }
                                 } else {
@@ -168,7 +169,7 @@ public class CQMinimizer {
                                     // it should not contain this variable; otherwise the mapping of this variable will change other parts of the query body,
                                     //
                                     found_homo = false;
-                                    System.out.println("------ the " + i +"th element is variable, but appeared in " + temp_atom);
+//                                    System.out.println("------ the " + i +"th element is variable, but appeared in " + temp_atom);
                                     break;
                                 }
                             }
@@ -177,13 +178,13 @@ public class CQMinimizer {
                 }
             }
             if (found_homo) {
-                System.out.println("---- Found homomorphism with " + target_atom);
+//                System.out.println("---- Found homomorphism with " + target_atom);
                 return true;
             } else {
-                System.out.println("------ Not homomorphism with this atom");
+//                System.out.println("------ Not homomorphism with this atom");
             }
         }
-        System.out.println("---- No homomorphism, can not be removed");
+//        System.out.println("---- No homomorphism, can not be removed");
         return false; // fails to find homomorphism to any other atoms
     }
 
