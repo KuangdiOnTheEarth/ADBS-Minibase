@@ -31,8 +31,8 @@ ed\inf\adbs\minibase\base\RelationalAtom.class
 ed\inf\adbs\minibase\base\Term.class
 ed\inf\adbs\minibase\parser\generated\MinibaseParser$SumaggContext.class
 ed\inf\adbs\minibase\operator\JoinCondition.class
+ed\inf\adbs\minibase\operator\AggregateOperator.class
 ed\inf\adbs\minibase\parser\QueryParser$TermVisitor.class
-ed\inf\adbs\minibase\operator\SingleAvgOperator.class
 ed\inf\adbs\minibase\base\AggTerm.class
 ed\inf\adbs\minibase\operator\AvgOperator.class
 ed\inf\adbs\minibase\base\Constant.class
