@@ -36,10 +36,8 @@ public class Minibase {
             Query query = QueryParser.parse(Paths.get(inputFile));
 //            System.out.println("Input query: " + query);
 
-            /**
-             * Build the query plan tree for the input query,
-             * then execute the {@link Operator#dump(String)} method on root to get the query result
-             */
+            // Build the query plan tree for the input query,
+            // then execute the {@link Operator#dump(String)} method on root to get the query result
             Operator queryPlan = buildQueryPlan(query);
             if (queryPlan != null) {
                 queryPlan.dump(outputFile);

@@ -6,6 +6,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * Apply JOIN operation on the output tuple sets of two child operators.
+ * The inner join conditions (i.e. the two join relations contain same variables) will be processed automatically in this class.
+ * The rest of join conditions (e.g. some comparison between two different variables in the two join relations separately)
+ *      are explicitly provided by {@link ComparisonAtom} in query body, which is an input parameter in the constructor.
+ */
 public class JoinOperator extends Operator {
 
     private Operator leftChild;
@@ -14,11 +20,27 @@ public class JoinOperator extends Operator {
     private List<JoinCondition> conditions = new ArrayList<>();
 
     private HashMap<Integer, Integer> joinConditionIndices = new HashMap<>();
+    // a map from variable index in left tuples to index in right tuples that represents the same variable
+    // this is used for inner join checks, duplication columns will be removed by referring to this map.
+
     private List<Integer> rightDuplicateColumns = new ArrayList<>();
-    // the columns in right child to be removed (since it duplicates with columns in left child)
+    // the columns in right child to be removed (due to inner join / duplicates with columns in left child)
 
     private Tuple leftTuple = null;
+    // the current being checked output tuple of left child
 
+    /**
+     * Initialise the operator:
+     *      (1) Convert the input {@link ComparisonAtom} list into {@link SelectCondition} list,
+     *          which implements specific methods for checking whether a tuple satisfy a certain condition.
+     *      (2) Check the inner join conditions, i.e. find the variables which appear in both left and right tuples,
+     *          interpret these conditions as {@link SelectOperator} instances.
+     *      (3) Update the variable mask, the right child tuples will be concatenated to
+     *          the left child tuples (with the inner join duplicated columns be removed)
+     * @param leftChild left child operator.
+     * @param rightChild right child operator.
+     * @param comparisonAtoms the explicit join conditions provided by {@link ComparisonAtom} in query body.
+     */
     public JoinOperator(Operator leftChild, Operator rightChild, List<ComparisonAtom> comparisonAtoms) {
         this.leftChild = leftChild;
         List<String> leftVariableMask = leftChild.getVariableMask();
@@ -28,9 +50,12 @@ public class JoinOperator extends Operator {
         for (ComparisonAtom compAtom : comparisonAtoms)
             this.conditions.add(new JoinCondition(compAtom, leftVariableMask, rightVariableMask));
 
+        // Find if the right relation contains some variables that also appear in left relation.
+        // These identical variable pairs indicate some inner join conditions.
         for (String leftVar : leftVariableMask) {
             this.variableMask.add(leftVar);
             if (rightVariableMask.contains(leftVar)) {
+                // construct new join conditions for these identical variable pairs
                 this.joinConditionIndices.put(leftVariableMask.indexOf(leftVar), rightVariableMask.indexOf(leftVar));
                 this.rightDuplicateColumns.add(rightVariableMask.indexOf(leftVar));
             }
@@ -45,12 +70,22 @@ public class JoinOperator extends Operator {
         }
     }
 
+    /**
+     * Reset the states of both child operators.
+     */
     @Override
     public void reset() {
         this.leftChild.reset();
         this.rightChild.reset();
+        this.leftTuple = null;
     }
 
+    /**
+     * Get the next joined tuple from output of left and right child operators.
+     * Implements an outer loop on left child tuples (and use {@code this.leftTuple} to track the being checked left tuple).
+     * Implements an inner loop on right child tuples.
+     * @return the next joined tuple that satisfies the join conditions.
+     */
     @Override
     public Tuple getNextTuple() {
         // the leftTuple is stored in the instance, otherwise each left tuple can only be joined with at most one right tuple
@@ -58,10 +93,9 @@ public class JoinOperator extends Operator {
             this.leftTuple = this.leftChild.getNextTuple();
 
         while (this.leftTuple != null) {
+            // Fix a tuple in outer loop, then iterate over the tuples in inner loop
             Tuple rightTuple = this.rightChild.getNextTuple();
             while (rightTuple != null) {
-
-//                System.out.println("------- checking (" + this.leftTuple + ") & (" + rightTuple + ")");
 
                 boolean pass = true;
                 // check the inner join conditions provided by same variable names in two query atoms
@@ -99,13 +133,18 @@ public class JoinOperator extends Operator {
                 // otherwise, check the next right tuple
                 rightTuple = this.rightChild.getNextTuple();
             }
+            // reset the right child operator, so the inner loop will be restarted from beginning
             this.rightChild.reset();
-
+            // move to the next outer loop tuple
             this.leftTuple = this.leftChild.getNextTuple();
         }
         return null;
     }
 
+    /**
+     * Unit test of JoinOperator, output is printed to the console.
+     * @param args Command line inputs, can be empty.
+     */
     public static void main(String[] args) {
         DBCatalog dbc = DBCatalog.getInstance();
         dbc.init("data/evaluation/db");
